@@ -36,6 +36,19 @@ class BasicALU extends Module {
   }
 }
 
+
+
+object BasicALUApp extends App {
+
+  ChiselStage.emitSystemVerilogFile(
+    new BasicALU,
+    firtoolOpts = Array(
+      "-o", "generated/BasicALU.v",
+      "-disable-all-randomization",
+      "-strip-debug-info")
+  )
+}
+
 class SimpleALU extends Module {
   val io = IO(new Bundle {
     val a      = Input(UInt(4.W))

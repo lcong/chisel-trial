@@ -54,7 +54,7 @@ object Counter10App extends App {
     ChiselStage.emitSystemVerilogFile(
         new Counter10,
         firtoolOpts = Array(
-            "-o", "generated/SimpleALU.v",
+            "-o", "generated/Counter10.v",
             "-disable-all-randomization",
             "-strip-debug-info")
     )
