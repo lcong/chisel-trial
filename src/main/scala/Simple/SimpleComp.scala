@@ -59,7 +59,33 @@ class CompD extends Module {
     val in = Input(UInt(8.W))
     val out = Output(UInt(8.W))
   })
+
+  io.out := io.in
   // function of D
+}
+
+class TopLevel extends Module{
+
+  val io = IO(new Bundle{
+    val inA = Input(UInt(8.W))
+    val inB = Input(UInt(8.W))
+    val inC = Input(UInt(8.W))
+    val outM = Output(UInt(8.W))
+    val outN = Output(UInt(8.W))
+  })
+
+  // create C and D
+  val c = Module(new CompC())
+  val d = Module(new CompD())
+  // connect C
+  c.io.inA := io.inA
+  c.io.inB := io.inB
+  c.io.inC := io.inC
+  io.outM := c.io.outX
+  // connect D
+  d.io.in := c.io.outY
+  io.outN := d.io.out
+
 }
 
 
@@ -67,7 +93,7 @@ class CompD extends Module {
 object SimpleCompApp extends App {
 
   ChiselStage.emitSystemVerilogFile(
-    new CompC,
+    new TopLevel,
     firtoolOpts = Array(
       "-o", "generated/SimpleComp.v",
       "-disable-all-randomization",
